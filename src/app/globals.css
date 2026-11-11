@@ -1,0 +1,197 @@
+@import "tailwindcss";
+@import "@fontsource/poppins/400.css";
+@import "@fontsource/poppins/500.css";
+@import "@fontsource/poppins/600.css";
+@import "@fontsource/caveat/600.css";
+@import "@fontsource/libre-baskerville/500.css";
+@import "@fontsource/libre-baskerville/600.css";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ------------------------------------------------------------------ Jetons */
+/* Mêmes jetons que le site vitrine : base façon Manus (blanc cassé chaud), un seul accent cyan pour Edualis.
+   `.theme-light` force les jetons clairs sur un bloc, même quand la page est en sombre (miniatures du sélecteur de thème). */
+:root,
+.theme-light {
+  --bg: #f8f8f7;
+  --bg-alt: #f1f1ef;
+  --card: #ffffff;
+  --card-alt: #f8f8f7;
+  --fg: #1a1a19;
+  --fg-muted: #64645f;
+  --line: rgb(0 0 0 / 0.08);
+  --line-strong: rgb(0 0 0 / 0.14);
+  --glass: rgb(248 248 247 / 0.82);
+  --shadow: 0 1px 2px rgb(0 0 0 / 0.03), 0 8px 24px -16px rgb(0 0 0 / 0.12);
+
+  --accent: #0e7490;
+  --accent-vivid: #0891b2;
+  --accent-soft: #e3f1f4;
+  --accent-fg: #ffffff;
+
+  --success: #2f7d3a;
+  --success-soft: #e6f2e7;
+  --warning: #a15c07;
+  --warning-soft: #fbf0dc;
+  --danger: #c0262d;
+  --danger-soft: #fbe9ea;
+  color-scheme: light;
+}
+
+.dark {
+  --bg: #111110;
+  --bg-alt: #181817;
+  --card: #1e1e1d;
+  --card-alt: #181817;
+  --fg: #f2f2f0;
+  --fg-muted: #a3a39e;
+  --line: rgb(255 255 255 / 0.09);
+  --line-strong: rgb(255 255 255 / 0.16);
+  --glass: rgb(17 17 16 / 0.82);
+  --shadow: 0 1px 2px rgb(0 0 0 / 0.4);
+
+  --accent: #22b8d8;
+  --accent-vivid: #22d3ee;
+  --accent-soft: rgb(34 184 216 / 0.14);
+  --accent-fg: #00151b;
+
+  --success: #6cc779;
+  --success-soft: rgb(108 199 121 / 0.14);
+  --warning: #e8b04a;
+  --warning-soft: rgb(232 176 74 / 0.14);
+  --danger: #f2777c;
+  --danger-soft: rgb(242 119 124 / 0.14);
+  color-scheme: dark;
+}
+
+@theme inline {
+  --font-sans: "Poppins", ui-sans-serif, system-ui, sans-serif;
+  --font-hand: "Caveat", "Verveine", cursive;
+  --font-serif: "Libre Baskerville", ui-serif, Georgia, serif;
+  --color-bg: var(--bg);
+  --color-bg-alt: var(--bg-alt);
+  --color-card: var(--card);
+  --color-card-alt: var(--card-alt);
+  --color-fg: var(--fg);
+  --color-muted: var(--fg-muted);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-accent: var(--accent);
+  --color-accent-vivid: var(--accent-vivid);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-fg: var(--accent-fg);
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-warning: var(--warning);
+  --color-warning-soft: var(--warning-soft);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+  --radius-card: 1.25rem;
+  --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ------------------------------------------------------------------ Base */
+html {
+  background: var(--bg);
+  color: var(--fg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+body {
+  background: var(--bg);
+  min-height: 100dvh;
+  overflow-x: clip;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+::selection { background: color-mix(in oklab, var(--accent-vivid) 28%, transparent); }
+/* Dans la couche de base : les classes `rounded-*` de chaque élément gardent la main, le contour suit leur arrondi.
+   Les éléments sans arrondi (liens texte) reçoivent un léger 6 px pour que le contour ne soit pas carré. */
+@layer base {
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  a:focus-visible { border-radius: 6px; }
+}
+[tabindex="-1"]:focus-visible { outline: none; }
+/* Les champs montrent déjà le focus par leur anneau (ring) : pas de second contour décalé par-dessus. */
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible { outline: none; }
+[role="menuitem"]:focus-visible,
+[role="menuitemradio"]:focus-visible { outline: none; }
+h1, h2, h3 { text-wrap: balance; font-weight: 600; }
+@layer base {
+  h1, h2 { font-family: var(--font-serif); letter-spacing: -0.02em; }
+  button { cursor: pointer; }
+}
+p { text-wrap: pretty; }
+
+/* ------------------------------------------------------------------ Utilitaires */
+@utility title-lg {
+  font-family: var(--font-serif);
+  font-size: clamp(1.6rem, 1.3rem + 1.2vw, 2.1rem);
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+  font-weight: 600;
+}
+@utility title-md {
+  font-family: var(--font-serif);
+  font-size: 1.3rem;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  font-weight: 600;
+}
+@utility hand {
+  font-family: var(--font-hand);
+  font-weight: 600;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--accent);
+}
+@utility bento {
+  position: relative;
+  border-radius: var(--radius-card);
+  background: var(--card);
+}
+.bento { box-shadow: inset 0 0 0 1px var(--line), var(--shadow); }
+
+@utility glass {
+  background: var(--glass);
+  -webkit-backdrop-filter: saturate(1.8) blur(20px);
+  backdrop-filter: saturate(1.8) blur(20px);
+}
+
+/* Trame de l'éditeur Cerise et de la page de connexion. */
+.dot-grid {
+  background-image: radial-gradient(circle, rgb(0 0 0 / 0.09) 1px, transparent 1.2px);
+  background-size: 22px 22px;
+}
+.dark .dot-grid {
+  background-image: radial-gradient(circle, rgb(255 255 255 / 0.08) 1px, transparent 1.2px);
+}
+
+/* Apparition des pages : léger fondu, respecte prefers-reduced-motion. */
+@media (prefers-reduced-motion: no-preference) {
+  .page-in { animation: page-in 0.5s var(--ease-soft) both; }
+}
+@keyframes page-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* Fenêtres (Radix Dialog) */
+@media (prefers-reduced-motion: no-preference) {
+  .dialog-overlay[data-state="open"] { animation: fade-in 0.2s ease-out; }
+  .dialog-content[data-state="open"] { animation: dialog-in 0.28s var(--ease-soft); }
+  .menu-content[data-state="open"] { animation: menu-in 0.16s var(--ease-soft); }
+  .sheet-content[data-state="open"] { animation: sheet-in 0.3s var(--ease-soft); }
+}
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+/* Le centrage passe par la propriété `translate` (Tailwind 4) : l'animation ne touche qu'à `transform`, sans le refaire. */
+@keyframes dialog-in { from { opacity: 0; transform: translateY(10px) scale(0.97); } to { opacity: 1; transform: none; } }
+@keyframes menu-in { from { opacity: 0; transform: translateY(-4px) scale(0.98); } to { opacity: 1; transform: none; } }
+@keyframes sheet-in { from { transform: translateX(-100%); } to { transform: none; } }
+
+/* Champs numériques sans flèches natives. */
+input[type="number"].no-spin { appearance: textfield; -moz-appearance: textfield; }
+input[type="number"].no-spin::-webkit-inner-spin-button,
+input[type="number"].no-spin::-webkit-outer-spin-button { appearance: none; margin: 0; }
